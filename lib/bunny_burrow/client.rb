@@ -24,10 +24,8 @@ module BunnyBurrow
         persistence: false
       }
 
-      consumer = Bunny::Consumer.new(channel, DIRECT_REPLY_TO, SecureRandom.uuid)
       consumer.on_delivery do |_, _, received_payload|
         result = handle_delivery(details, received_payload)
-
       end
 
       channel.basic_consume_with consumer
@@ -48,6 +46,10 @@ module BunnyBurrow
       result = payload
       lock.synchronize {condition.signal}
       result
+    end
+
+    def consumer
+      @consumer ||= Bunny::Consumer.new(channel, DIRECT_REPLY_TO, SecureRandom.uuid)
     end
   end
 end

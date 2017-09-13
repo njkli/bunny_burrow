@@ -91,6 +91,11 @@ describe BunnyBurrow::Client do
       end
     end
 
+    it 'creates only one consumer' do
+      expect(Bunny::Consumer).to receive(:new).with(channel, BunnyBurrow::Client::DIRECT_REPLY_TO, an_instance_of(String)).once
+      subject.publish request, routing_key
+      subject.publish request, routing_key
+    end
   end # describe '#publish'
 
   describe '#handle_delivery' do
