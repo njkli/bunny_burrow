@@ -44,7 +44,7 @@ describe BunnyBurrow::Client do
         reply_to: BunnyBurrow::Client::DIRECT_REPLY_TO,
         persistence: false
       }
-      expect(topic_exchange).to receive(:publish).with(request.to_json, hash_including(options))
+      expect(topic_exchange).to receive(:publish).with(request.to_msgpack, hash_including(options))
       subject.publish request, routing_key
     end
 
@@ -162,4 +162,3 @@ describe BunnyBurrow::Client do
     end
   end # describe '#shutdown'
 end # describe BunnyBurrow::Client
-

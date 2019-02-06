@@ -32,7 +32,7 @@ module BunnyBurrow
 
       begin
         channel.basic_consume_with consumer
-        topic_exchange.publish(payload.to_json, options)
+        topic_exchange.publish(payload.to_msgpack, options)
 
         Timeout.timeout(timeout) do
           lock.synchronize {condition.wait(lock)}
@@ -48,7 +48,7 @@ module BunnyBurrow
       log "Receiving #{details}"
       result = payload
       lock.synchronize {condition.signal}
-      result
+      MessagePack.unpack result
     end
   end
 end

@@ -1,5 +1,5 @@
 require 'bunny'
-require 'json'
+require 'msgpack'
 require 'thread'
 
 module BunnyBurrow
@@ -84,4 +84,3 @@ module BunnyBurrow
     end
   end
 end
-

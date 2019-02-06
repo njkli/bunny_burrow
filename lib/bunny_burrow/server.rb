@@ -31,12 +31,12 @@ module BunnyBurrow
           details[:request] = payload if log_request?
           log "Receiving #{details}"
 
-          response = block.call(payload)
+          response = block.call(MessagePack.unpack payload)
 
           details[:response] = response if log_response?
 
           log "Replying #{details}"
-          default_exchange.publish(response.to_json, :routing_key => properties.reply_to, persistence: false)
+          default_exchange.publish(response.to_msgpack, :routing_key => properties.reply_to, persistence: false)
 
           log "Acknowledging #{details}"
           channel.ack delivery_info.delivery_tag
@@ -46,7 +46,7 @@ module BunnyBurrow
             status: STATUS_SERVER_ERROR,
             error_message: e.message
           }
-          default_exchange.publish(response.to_json, :routing_key => properties.reply_to, persistence: false)
+          default_exchange.publish(response.to_msgpack, :routing_key => properties.reply_to, persistence: false)
         end
       end
     rescue => e

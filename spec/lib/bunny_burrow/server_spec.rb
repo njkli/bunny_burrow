@@ -41,7 +41,7 @@ describe BunnyBurrow::Server do
     let(:channel)          { double 'channel' }
     let(:default_exchange) { double 'default exchange' }
     let(:delivery_info)    { double 'delivery info', delivery_tag: 'some-tag' }
-    let(:payload)          { { key: 'value' }.to_json }
+    let(:payload)          { { key: 'value' }.to_msgpack }
     let(:properties)       { double 'properties', reply_to: 'reply.to' }
     let(:queue)            { double 'queue' }
     let(:queue_name)       { 'this-is-my-queue-name' }
